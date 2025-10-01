@@ -2,32 +2,109 @@ from django.db import models
 
 # Create your models here.
 
-
-class Author(models.Model):
-    name = models.CharField(verbose_name='Имя автора', max_length=20)
-    surname = models.CharField("Фамилия",max_length=25)
-    bitrhday = models.DateField("Биография", default="1999-02-02")
-    bio = models.TextField("Описание")
-    desc = models.CharField("Жив или мертв", default="No")
-
-    class Meta: 
-        verbose_name = 'Автор'
-        verbose_name_plural = 'Авторы'
-        ordering = ['surname','name']
+class Post (models.Model):
+    post = models.CharField("Должность", max_length=50)
+    salary = models.IntegerField ("Зарплата")
+    
+    class Meta:
+        verbose_name = "Должность" 
+        verbose_name_plural = "Должности" 
+        ordering = ["salary"] 
         indexes = [
-            models.Index(fields=['surname'])
+            models.Index(fields=["post"]),
+            models.Index(fields=["salary"]),
         ]
-        constraints = [
-            models.UniqueConstraint (
-                fields = ['surname','bio'],
-                condition=models.Q(desc='Жив'),
-                name = 'unique_surname_bio'
-            ),
+       
+    def str(self):
+        return f"{self.post}"
+    
+class Seller (models.Model):
+    first_name = models.CharField("Имя", max_length=50)
+    last_name = models.CharField("Фамилия", max_length=50)
+    father_name = models.CharField("Отчество", max_length=50)
+    phone_number = models.CharField("Номер телефона", max_length=11)
+    post_id = models.ForeignKey(Post, on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = "Продавец"
+        verbose_name_plural = "Продавцы"
+        ordering = ["last_name, first_name, father_name"]
+        indexes = [
+            models.Index(fields=["first_name"]), 
+            models.Index(fields=["last_name"]),
+            models.Index(fields=["phone_number"])
         ]
 
-class Publisher(models.Model):
-    name = models.CharField("Название",unique=True)
+    def str(self):
+        return f"{self.name} {self.surname}"
+    
+class Categories(models.Model):
+    name = models.CharField("Название", max_length=50)
 
-class Book(models.Model):
-    title = models.CharField("Названиие",max_length=50)
-    id_publisher = models.ForeignKey(Publisher, on_delete=models.CASCADE)
+    class Meta:
+        verbose_name = "Категория"
+        verbose_name_plural = "Категории"  
+        indexes = [
+            models.Index(fields=["name"]),  
+        ]
+
+    def str(self):
+        return f"{self.name}"
+    
+class Car (models.Model):
+    name = models.CharField("Название", max_length=50)
+    price = models.CharField("Цена", max_length=50)
+    equipment = models.CharField("Комплектация", max_length=50)
+    colour = models.CharField("Цвет", max_length=11)
+    categories_id = models.ForeignKey(Categories, on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = "Машина"
+        verbose_name_plural = "Машины"
+        ordering = ["price"]
+        indexes = [
+            models.Index(fields=["name"]), 
+            models.Index(fields=["price"]),
+            models.Index(fields=["colour"]),
+            models.Index(fields=["equipment"])
+        ]
+
+    def str(self):
+        return f"{self.name} {self.price} {self.equipment}"
+
+class Costumer (models.Model):
+    first_name = models.CharField("Имя", max_length=50)
+    last_name = models.CharField("Фамилия", max_length=50)
+    father_name = models.CharField("Отчество", max_length=50)
+    phone_number = models.CharField("Номер телефона", max_length=11)
+    car_id = models.ForeignKey(Car, on_delete=models.CASCADE)
+    order_id = models.ForeignKey(Order, on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = "Покупатель"
+        verbose_name_plural = "Покупатели"
+        ordering = ["last_name, first_name, father_name"]
+        indexes = [
+            models.Index(fields=["first_name"]), 
+            models.Index(fields=["last_name"]),
+            models.Index(fields=["phone_number"])
+        ]
+
+    def str(self):
+        return f"{self.name} {self.surname}"
+    
+class Order (models.Model):
+    costumer_id = models.ForeignKey(Costumer, on_delete=models.CASCADE)
+    seller_id = models.ForeignKey(Seller, on_delete=models.CASCADE)
+    price = models.IntegerField("Цена")
+
+    class Meta:
+        verbose_name = "Заказ"
+        verbose_name_plural = "Заказы"
+        ordering = ["price"]
+        indexes = [
+            models.Index(fields=["price"])
+        ]
+
+    def str(self):
+        return f"{self.price}"
