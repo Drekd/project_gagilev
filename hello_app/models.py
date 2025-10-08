@@ -93,7 +93,6 @@ class Costumer(models.Model):
     father_name = models.CharField("Отчество", max_length=50)
     phone_number = models.CharField("Номер телефона", max_length=11)
     car_id = models.ForeignKey(Car, on_delete=models.CASCADE)
-    order_id = models.ForeignKey(Order, on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = "Покупатель"
