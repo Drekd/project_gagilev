@@ -19,7 +19,7 @@ class Post(models.Model):
 class Seller(models.Model):
     first_name = models.CharField("Имя", max_length=50)
     last_name = models.CharField("Фамилия", max_length=50)
-    father_name = models.CharField("Отчество", max_length=50)
+    father_name = models.CharField("Отчество", max_length=50, blank=True)
     phone_number = models.CharField("Номер телефона", max_length=11)
     post_id = models.ForeignKey(Post, on_delete=models.CASCADE)
 
@@ -63,8 +63,7 @@ class Car(models.Model):
         indexes = [
             models.Index(fields=["name"]), 
             models.Index(fields=["price"]),
-            models.Index(fields=["colour"]),
-            models.Index(fields=["equipment"])
+            models.Index(fields=["colour"])
         ]
 
     def __str__(self):  
@@ -73,8 +72,9 @@ class Car(models.Model):
 
 class Order(models.Model):
     costumer_id = models.ForeignKey('Costumer', on_delete=models.CASCADE)  
-    seller_id = models.ForeignKey(Seller, on_delete=models.CASCADE)
+    seller_id = models.ForeignKey(Seller, on_delete=models.CASCADE, verbose_name='Продавец')
     price = models.IntegerField("Цена")
+    car = models.ForeignKey(Car, on_delete=models.CASCADE, verbose_name='Машина')
 
     class Meta:
         verbose_name = "Заказ"
@@ -90,7 +90,7 @@ class Order(models.Model):
 class Costumer(models.Model):
     first_name = models.CharField("Имя", max_length=50)
     last_name = models.CharField("Фамилия", max_length=50)
-    father_name = models.CharField("Отчество", max_length=50)
+    father_name = models.CharField("Отчество", max_length=50,blank=True)
     phone_number = models.CharField("Номер телефона", max_length=11)
     car_id = models.ForeignKey(Car, on_delete=models.CASCADE)
 
