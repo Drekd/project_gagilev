@@ -1,8 +1,99 @@
-<!DOCTYPE html>
-<html lang="ru">
 {% extends "index.html" %}
 {% block content %}
-       <main class="main-content">
+<main class="main-content">
+    <div class="container">
+        <section class="search-section">
+            <h2 class="search-title">Найдите автомобиль вашей мечты</h2>
+            <form class="search-form">
+                <div class="form-group">
+                    <label for="brand">Марка</label>
+                    <select id="brand" class="form-select">
+                        <option value="">Все марки</option>
+                        <option value="toyota">Toyota</option>
+                        <option value="mercedes">Mercedes</option>
+                        <option value="bmw">BMW</option>
+                        <option value="kia">Kia</option>
+                        <option value="honda">Honda</option>
+                        <option value="audi">Audi</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="model">Модель</label>
+                    <select id="model" class="form-select">
+                        <option value="">Все модели</option>
+                        <option value="camry">Camry</option>
+                        <option value="e200">E200</option>
+                        <option value="x5">X5</option>
+                        <option value="rio">Rio</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="category">Категория</label>
+                    <select id="category" class="form-select">
+                        <option value="">Все категории</option>
+                        <option value="sedan">Седан</option>
+                        <option value="suv">Внедорожник</option>
+                        <option value="hatchback">Хэтчбек</option>
+                        <option value="coupe">Купе</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="year">Год выпуска</label>
+                    <select id="year" class="form-select">
+                        <option value="">Любой год</option>
+                        <option value="2024">2024</option>
+                        <option value="2023">2023</option>
+                        <option value="2022">2022</option>
+                        <option value="2021">2021</option>
+                        <option value="2020">2020</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Цена, ₽</label>
+                    <div class="price-range">
+                        <input type="number" class="form-input price-input" placeholder="От" min="0">
+                        <div class="price-separator">—</div>
+                        <input type="number" class="form-input price-input" placeholder="До" min="0">
+                    </div>
+                </div>
+                
+                <button type="submit" class="search-btn">Найти</button>
+            </form>
+            
+            <div class="advanced-filters">
+                <button class="advanced-toggle" onclick="toggleAdvancedFilters()">
+                    <span>Расширенные фильтры</span>
+                    <span>▼</span>
+                </button>
+                <div class="advanced-content" id="advancedFilters" style="display: none;">
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="new" checked>
+                        <label for="new">Новые</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="used">
+                        <label for="used">С пробегом</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="credit">
+                        <label for="credit">В кредит</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="tradein">
+                        <label for="tradein">Trade-in</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="promo">
+                        <label for="promo">Со скидкой</label>
+                    </div>
+                </div>
+            </div>
+        </section>
+<main class="main-content">
         <div class="container">
             <section>
                 <h2 class="section-title">Автомобили в наличии</h2>
