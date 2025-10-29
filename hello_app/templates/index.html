@@ -30,95 +30,10 @@
             </div>
         </div>
     </header>
-      <main class="main-content">
-        <div class="container">
-            <section>
-                <h2 class="section-title">Автомобили в наличии</h2>
-                <div class="cars-grid">
-                    <div class="car-card">
-                        <div class="car-image">Изображение автомобиля</div>
-                        <div class="car-info">
-                            <div class="car-name">Toyota Camry</div>
-                            <div class="car-price">2 500 000 ₽</div>
-                            <div class="car-details">
-                                <p>Комплектация: Comfort</p>
-                                <p>Цвет: Белый</p>
-                                <p>Категория: Седан</p>
-                            </div>
-                            <a href="#" class="btn">Подробнее</a>
-                        </div>
-                    </div>
-                    
-                    <div class="car-card">
-                        <div class="car-image">Изображение автомобиля</div>
-                        <div class="car-info">
-                            <div class="car-name">Honda CR-V</div>
-                            <div class="car-price">3 200 000 ₽</div>
-                            <div class="car-details">
-                                <p>Комплектация: Elegance</p>
-                                <p>Цвет: Черный</p>
-                                <p>Категория: Кроссовер</p>
-                            </div>
-                            <a href="#" class="btn">Подробнее</a>
-                        </div>
-                    </div>
-                    
-                    <div class="car-card">
-                        <div class="car-image">Изображение автомобиля</div>
-                        <div class="car-info">
-                            <div class="car-name">BMW X5</div>
-                            <div class="car-price">5 800 000 ₽</div>
-                            <div class="car-details">
-                                <p>Комплектация: Premium</p>
-                                <p>Цвет: Синий</p>
-                                <p>Категория: Внедорожник</p>
-                            </div>
-                            <a href="#" class="btn">Подробнее</a>
-                        </div>
-                    </div>
-                    
-                    <div class="car-card">
-                        <div class="car-image">Изображение автомобиля</div>
-                        <div class="car-info">
-                            <div class="car-name">Kia Rio</div>
-                            <div class="car-price">1 400 000 ₽</div>
-                            <div class="car-details">
-                                <p>Комплектация: Classic</p>
-                                <p>Цвет: Серый</p>
-                                <p>Категория: Седан</p>
-                            </div>
-                            <a href="#" class="btn">Подробнее</a>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            
-            <section>
-                <h2 class="section-title">Наши продавцы</h2>
-                <div class="sellers-grid">
-                    <div class="seller-card">
-                        <div class="seller-photo">Фото</div>
-                        <div class="seller-name">Иванов Иван</div>
-                        <div class="seller-position">Старший менеджер</div>
-                        <div class="seller-phone">+7 900 123-45-67</div>
-                    </div>
-                    
-                    <div class="seller-card">
-                        <div class="seller-photo">Фото</div>
-                        <div class="seller-name">Петрова Анна</div>
-                        <div class="seller-position">Менеджер по продажам</div>
-                        <div class="seller-phone">+7 900 234-56-78</div>
-                    </div>
-                    
-                    <div class="seller-card">
-                        <div class="seller-photo">Фото</div>
-                        <div class="seller-name">Сидоров Алексей</div>
-                        <div class="seller-position">Менеджер</div>
-                        <div class="seller-phone">+7 900 345-67-89</div>
-                    </div>
-                </div>
-            </section>
-        </div>
+<main>
+    {% block content %}
+    {% endblock %}
+</main>
     <footer>
         <div class="container">
             <div class="footer-content">
@@ -164,5 +79,6 @@
             </div>
         </div>
     </footer>
+      </main>
 </body>
 </html>
