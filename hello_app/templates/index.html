@@ -11,7 +11,7 @@
     <header>
         <div class="header-top">
             <div class="container">
-                <div class="logo">SellCar</div>
+                <div class="logo"><a href={% url '' %}>SellCar</a></div>
                 <div class="contacts">
                     <a href="tel:+78001234567">8 800 123-45-67</a>
                     <a href="mailto:info@autosalon.ru">info@autosalon.ru</a>
@@ -21,8 +21,7 @@
         <div class="header-nav">
             <div class="container">
                 <ul>
-                    <li><a href="#">Главная</a></li>
-                    <li><a href="#">Автомобили</a></li>
+                    <li><a href={% url 'car' %}>Автомобили</a></li>
                     <li><a href="#">Акции</a></li>
                     <li><a href="#">О компании</a></li>
                     <li><a href="#">Контакты</a></li>
