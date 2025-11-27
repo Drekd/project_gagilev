@@ -4,183 +4,98 @@
     <div class="container">
         <section class="search-section">
             <h2 class="search-title">Найдите автомобиль вашей мечты</h2>
-            <form class="search-form">
+            <form class="search-form" method="GET" action="{% url 'car' %}">
                 <div class="form-group">
-                    <label for="brand">Марка</label>
-                    <select id="brand" class="form-select">
+                    <label for="brand">Марка автомобиля</label>
+                    <select id="brand" name="brand" class="form-select">
                         <option value="">Все марки</option>
-                        <option value="toyota">Toyota</option>
-                        <option value="mercedes">Mercedes</option>
-                        <option value="bmw">BMW</option>
-                        <option value="kia">Kia</option>
-                        <option value="honda">Honda</option>
-                        <option value="audi">Audi</option>
+                        {% for brand in brands %}
+                        <option value="{{ brand }}" {% if selected_brand == brand %}selected{% endif %}>{{ brand }}</option>
+                        {% endfor %}
                     </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="model">Модель</label>
-                    <select id="model" class="form-select">
-                        <option value="">Все модели</option>
-                        <option value="camry">Camry</option>
-                        <option value="e200">E200</option>
-                        <option value="x5">X5</option>
-                        <option value="rio">Rio</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="category">Категория</label>
-                    <select id="category" class="form-select">
-                        <option value="">Все категории</option>
-                        <option value="sedan">Седан</option>
-                        <option value="suv">Внедорожник</option>
-                        <option value="hatchback">Хэтчбек</option>
-                        <option value="coupe">Купе</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="year">Год выпуска</label>
-                    <select id="year" class="form-select">
-                        <option value="">Любой год</option>
-                        <option value="2024">2024</option>
-                        <option value="2023">2023</option>
-                        <option value="2022">2022</option>
-                        <option value="2021">2021</option>
-                        <option value="2020">2020</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label>Цена, ₽</label>
-                    <div class="price-range">
-                        <input type="number" class="form-input price-input" placeholder="От" min="0">
-                        <div class="price-separator">—</div>
-                        <input type="number" class="form-input price-input" placeholder="До" min="0">
-                    </div>
                 </div>
                 
                 <button type="submit" class="search-btn">Найти</button>
+                {% if selected_brand %}
+                <button type="button" class="search-btn secondary" onclick="clearFilter()">Сбросить</button>
+                {% endif %}
             </form>
-            
-            <div class="advanced-filters">
-                <button class="advanced-toggle" onclick="toggleAdvancedFilters()">
-                    <span>Расширенные фильтры</span>
-                    <span>▼</span>
-                </button>
-                <div class="advanced-content" id="advancedFilters" style="display: none;">
-                    <div class="checkbox-group">
-                        <input type="checkbox" id="new" checked>
-                        <label for="new">Новые</label>
-                    </div>
-                    <div class="checkbox-group">
-                        <input type="checkbox" id="used">
-                        <label for="used">С пробегом</label>
-                    </div>
-                    <div class="checkbox-group">
-                        <input type="checkbox" id="credit">
-                        <label for="credit">В кредит</label>
-                    </div>
-                    <div class="checkbox-group">
-                        <input type="checkbox" id="tradein">
-                        <label for="tradein">Trade-in</label>
-                    </div>
-                    <div class="checkbox-group">
-                        <input type="checkbox" id="promo">
-                        <label for="promo">Со скидкой</label>
+        </section>
+
+        <section>
+            <h2 class="section-title">
+                {% if selected_brand %}
+                    Автомобили марки {{ selected_brand }}
+                {% else %}
+                    Автомобили в наличии
+                {% endif %}
+            </h2>
+            <div class="cars-grid">
+                {% for car in cars %}
+                <div class="car-card">
+                    {% if car.image %}
+                        <img src="{{ car.image.url }}" alt="{{ car.name }}" class="car-image">
+                    {% else %}
+                        <img src="/static/image/584x438.webp" alt="{{ car.name }}" class="car-image">
+                    {% endif %}
+                    <div class="car-info">
+                        <div class="car-name">{{ car.name }}</div>
+                        <div class="car-price">{{ car.price }} ₽</div>
+                        <div class="car-details">
+                            <p>Год: {{ car.year }}</p>
+                            <p>Комплектация: {{ car.equipment }}</p>
+                            <p>Цвет: {{ car.colour }}</p>
+                            <p>Категория: {{ car.categories_id.name }}</p>
+                        </div>
+                        <a href="{% url 'car' %}" class="btn">Подробнее</a>
                     </div>
                 </div>
+                {% empty %}
+                <p>Автомобилей нет в наличии</p>
+                {% endfor %}
             </div>
         </section>
-<main class="main-content">
-        <div class="container">
-            <section>
-                <h2 class="section-title">Автомобили в наличии</h2>
-                <div class="cars-grid">
-                    <div class="car-card">
-                        <img src="../static/image/584x438.webp" alt="yral" class="car-image">
-                        <div class="car-info">
-                            <div class="car-name">Toyota Camry</div>
-                            <div class="car-price">2 500 000 ₽</div>
-                            <div class="car-details">
-                                <p>Комплектация: Comfort</p>
-                                <p>Цвет: Белый</p>
-                                <p>Категория: Седан</p>
-                            </div>
-                            <a href="#" class="btn">Подробнее</a>
-                        </div>
-                    </div>
-                    
-                    <div class="car-card">
-                        <img src="../static/image/i.webp" alt="yral" class="car-image">
-                        <div class="car-info">
-                            <div class="car-name">Mercedes e200</div>
-                            <div class="car-price">3 200 000 ₽</div>
-                            <div class="car-details">
-                                <p>Комплектация: Люкс</p>
-                                <p>Цвет: Черный</p>
-                                <p>Категория: Седан</p>
-                            </div>
-                            <a href="#" class="btn">Подробнее</a>
-                        </div>
-                    </div>
-                    
-                    <div class="car-card">
-                       <img src="../static/image/1200x900.webp" alt="yral" class="car-image">
-                        <div class="car-info">
-                            <div class="car-name">BMW X5</div>
-                            <div class="car-price">5 800 000 ₽</div>
-                            <div class="car-details">
-                                <p>Комплектация: Premium</p>
-                                <p>Цвет: Синий</p>
-                                <p>Категория: Внедорожник</p>
-                            </div>
-                            <a href="#" class="btn">Подробнее</a>
-                        </div>
-                    </div>
-                    
-                    <div class="car-card">
-                       <img src="../static/image/1200x900 (1).webp" alt="yral" class="car-image">
-                        <div class="car-info">
-                            <div class="car-name">Kia Rio</div>
-                            <div class="car-price">1 400 000 ₽</div>
-                            <div class="car-details">
-                                <p>Комплектация: Classic</p>
-                                <p>Цвет: Серый</p>
-                                <p>Категория: Седан</p>
-                            </div>
-                            <a href="#" class="btn">Подробнее</a>
-                        </div>
-                    </div>
+
+        <section>
+            <h2 class="section-title">Наши продавцы</h2>
+            <div class="sellers-grid">
+                {% for seller in sellers %}
+                <div class="seller-card">
+                    {% if seller.photo %}
+                        <img src="{{ seller.photo.url }}" alt="{{ seller.first_name }} {{ seller.last_name }}" class="seller-photo">
+                    {% else %}
+                        <img src="/static/image/vadim.webp" alt="{{ seller.first_name }} {{ seller.last_name }}" class="seller-photo">
+                    {% endif %}
+                    <div class="seller-name">{{ seller.last_name }} {{ seller.first_name }} {{ seller.father_name }}</div>
+                    <div class="seller-position">{{ seller.post_id.post }}</div>
+                    <div class="seller-phone">{{ seller.phone_number }}</div>
                 </div>
-            </section>
-            <section>
-                <h2 class="section-title">Наши продавцы</h2>
-                <div class="sellers-grid">
-                    <div class="seller-card">
-                        <img src="..\static\image\vadim.webp" alt="yral" class="car-image">
-                        <div class="seller-name">Вадим Лизогуб</div>
-                        <div class="seller-position">Старший менеджер</div>
-                        <div class="seller-phone">+7 987 654-32-10</div>
-                    </div>
-                    
-                    <div class="seller-card">
-                        <img src="..\static\image\gadji.webp" alt="yral" class="car-image">
-                        <div class="seller-name">Гаджимурат Великанович</div>
-                        <div class="seller-position">Менеджер по продажам</div>
-                        <div class="seller-phone">+7 999 777-66-55</div>
-                    </div>
-                    
-                    <div class="seller-card">
-                       <img src="../static/image/vlad.webp" alt="yral" class="car-image">
-                        <div class="seller-name">Владислав Медикометович</div>
-                        <div class="seller-position">Директор</div>
-                        <div class="seller-phone">+7 000 228-14-88</div>
-                    </div>
-                </div>
-            </section>
-        </div>
-        </main>
+                {% empty %}
+                <p>Информация о продавцах временно недоступна</p>
+                {% endfor %}
+            </div>
+        </section>
+    </div>
+</main>
+
+<script>
+function clearFilter() {
+    // Перенаправляем на страницу без параметров фильтра
+    window.location.href = "{% url 'main' %}";
+}
+
+// Автоматическая отправка формы при выборе марки (опционально)
+document.addEventListener('DOMContentLoaded', function() {
+    const brandSelect = document.getElementById('brand');
+    
+    if (brandSelect) {
+        brandSelect.addEventListener('change', function() {
+            // Если выбрана какая-то марка (не "Все марки"), отправляем форму
+            if (this.value) {
+                this.form.submit();
+            }
+        });
+    }
+});
+</script>
 {% endblock %}
-        

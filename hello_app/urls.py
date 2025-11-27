@@ -1,8 +1,7 @@
 from django.urls import path
-from django.contrib.sitemaps.views import sitemap
-from .views import main, index2
+from . import views
 
 urlpatterns = [
-    path('', main, name=''),
-    path('Car', index2, name='car')
+    path('', views.main, name='main'),
+    path('cars/', views.index2, name='car'),
 ]

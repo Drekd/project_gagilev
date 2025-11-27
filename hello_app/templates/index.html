@@ -11,7 +11,7 @@
     <header>
         <div class="header-top">
             <div class="container">
-                <div class="logo"><a href={% url '' %}>SellCar</a></div>
+                <div class="logo"><a href="{% url 'main' %}">SellCar</a></div>
                 <div class="contacts">
                     <a href="tel:+78001234567">8 800 123-45-67</a>
                     <a href="mailto:info@autosalon.ru">info@autosalon.ru</a>
@@ -21,7 +21,8 @@
         <div class="header-nav">
             <div class="container">
                 <ul>
-                    <li><a href={% url 'car' %}>Автомобили</a></li>
+                    <li><a href="{% url 'main' %}">Главная</a></li>
+                    <li><a href="{% url 'car' %}">Автомобили</a></li>
                     <li><a href="#">Акции</a></li>
                     <li><a href="#">О компании</a></li>
                     <li><a href="#">Контакты</a></li>
@@ -29,10 +30,12 @@
             </div>
         </div>
     </header>
-<main>
-    {% block content %}
-    {% endblock %}
-</main>
+
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
     <footer>
         <div class="container">
             <div class="footer-content">
@@ -48,9 +51,9 @@
                 <div class="footer-section">
                     <h3>Автомобили</h3>
                     <ul>
-                        <li><a href="#">Новые автомобили</a></li>
+                        <li><a href="{% url 'car' %}">Новые автомобили</a></li>
                         <li><a href="#">Акции</a></li>
-                        <li><a href="#">Каталог</a></li>
+                        <li><a href="{% url 'car' %}">Каталог</a></li>
                         <li><a href="#">Тест-драйв</a></li>
                     </ul>
                 </div>
@@ -78,6 +81,44 @@
             </div>
         </div>
     </footer>
-      </main>
+
+    <script>
+        function toggleAdvancedFilters() {
+            const advancedFilters = document.getElementById('advancedFilters');
+            if (advancedFilters.style.display === 'none') {
+                advancedFilters.style.display = 'block';
+            } else {
+                advancedFilters.style.display = 'none';
+            }
+        }
+    </script>
+    <script>
+// Глобальные функции
+function toggleAdvancedFilters() {
+    const advancedFilters = document.getElementById('advancedFilters');
+    if (advancedFilters) {
+        if (advancedFilters.style.display === 'none') {
+            advancedFilters.style.display = 'block';
+        } else {
+            advancedFilters.style.display = 'none';
+        }
+    }
+}
+
+// Общие функции фильтрации
+function validatePriceRange(minInput, maxInput) {
+    if (minInput && maxInput && minInput.value && maxInput.value) {
+        const min = parseInt(minInput.value);
+        const max = parseInt(maxInput.value);
+        
+        if (min > max) {
+            alert('Минимальная цена не может быть больше максимальной');
+            minInput.focus();
+            return false;
+        }
+    }
+    return true;
+}
+</script>
 </body>
 </html>

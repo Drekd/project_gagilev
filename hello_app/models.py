@@ -22,6 +22,7 @@ class Seller(models.Model):
     father_name = models.CharField("Отчество", max_length=50, blank=True)
     phone_number = models.CharField("Номер телефона", max_length=11)
     post_id = models.ForeignKey(Post, on_delete=models.CASCADE)
+    photo = models.ImageField("Фотография", upload_to='sellers/', blank=True, null=True)
 
     class Meta:
         verbose_name = "Продавец"
@@ -53,8 +54,10 @@ class Car(models.Model):
     name = models.CharField("Название", max_length=50)
     price = models.CharField("Цена", max_length=50)
     equipment = models.CharField("Комплектация", max_length=50)
-    colour = models.CharField("Цвет", max_length=11)  
+    colour = models.CharField("Цвет", max_length=11) 
+    year = models.IntegerField("Год выпуска", default=2024) 
     categories_id = models.ForeignKey(Categories, on_delete=models.CASCADE)
+    image = models.ImageField("Фотография", upload_to='cars/', blank=True, null=True)
 
     class Meta:
         verbose_name = "Машина"
@@ -63,7 +66,8 @@ class Car(models.Model):
         indexes = [
             models.Index(fields=["name"]), 
             models.Index(fields=["price"]),
-            models.Index(fields=["colour"])
+            models.Index(fields=["colour"]),
+            models.Index(fields=["year"])
         ]
 
     def __str__(self):  

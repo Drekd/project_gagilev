@@ -3,96 +3,48 @@
 <main class="main-content">
     <div class="container">
         <nav class="breadcrumbs">
-            <a href="/">Главная</a>
+            <a href="{% url 'main' %}">Главная</a>
             <span></span>
             <span>Автомобили</span>
         </nav>
 
         <section class="page-header">
-            <h1 class="page-title">Каталог автомобилей</h1>
+            <h1 class="page-title">
+                {% if selected_brand %}
+                    Каталог автомобилей {{ selected_brand }}
+                {% else %}
+                    Каталог автомобилей
+                {% endif %}
+            </h1>
             <p class="page-subtitle">Большой выбор новых и подержанных автомобилей</p>
         </section>
 
-        <!-- Фильтры -->
+        <!-- Простой фильтр по марке -->
         <section class="filters-section">
             <div class="filters-header">
-                <h2>Фильтры</h2>
-                <button class="reset-filters">Сбросить все</button>
+                {% if selected_brand %}
+                <button class="reset-filters" onclick="clearFilter()">Показать все марки</button>
+                {% endif %}
             </div>
             
-            <form class="filters-form">
-                <div class="filters-grid">
+            <form class="filters-form" method="GET">
+                <div class="filters-grid" style="grid-template-columns: 300px auto;">
                     <div class="filter-group">
-                        <label for="car-brand">Марка</label>
-                        <select id="car-brand" class="filter-select">
+                        <label for="car-brand">Выберите марку</label>
+                        <select id="car-brand" name="brand" class="filter-select">
                             <option value="">Все марки</option>
-                            <option value="toyota">Toyota</option>
-                            <option value="mercedes">Mercedes</option>
-                            <option value="bmw">BMW</option>
-                            <option value="kia">Kia</option>
-                            <option value="honda">Honda</option>
-                            <option value="audi">Audi</option>
-                            <option value="volkswagen">Volkswagen</option>
-                            <option value="hyundai">Hyundai</option>
+                            {% for brand in brands %}
+                            <option value="{{ brand }}" {% if selected_brand == brand %}selected{% endif %}>{{ brand }}</option>
+                            {% endfor %}
                         </select>
                     </div>
                     
-                    <div class="filter-group">
-                        <label for="car-model">Модель</label>
-                        <select id="car-model" class="filter-select">
-                            <option value="">Все модели</option>
-                        </select>
+                    <div class="filter-actions">
+                        <button type="submit" class="filter-btn primary">Применить</button>
+                        {% if selected_brand %}
+                        <button type="button" class="filter-btn secondary" onclick="clearFilter()">Сбросить</button>
+                        {% endif %}
                     </div>
-                    
-                    <div class="filter-group">
-                        <label for="car-category">Категория</label>
-                        <select id="car-category" class="filter-select">
-                            <option value="">Все категории</option>
-                            <option value="sedan">Седан</option>
-                            <option value="suv">Внедорожник</option>
-                            <option value="hatchback">Хэтчбек</option>
-                            <option value="coupe">Купе</option>
-                            <option value="minivan">Минивэн</option>
-                            <option value="universal">Универсал</option>
-                        </select>
-                    </div>
-                    
-                    <div class="filter-group">
-                        <label for="car-year-from">Год от</label>
-                        <select id="car-year-from" class="filter-select">
-                            <option value="">Любой</option>
-                            <option value="2024">2024</option>
-                            <option value="2023">2023</option>
-                            <option value="2022">2022</option>
-                            <option value="2021">2021</option>
-                            <option value="2020">2020</option>
-                        </select>
-                    </div>
-                    
-                    <div class="filter-group">
-                        <label for="car-year-to">Год до</label>
-                        <select id="car-year-to" class="filter-select">
-                            <option value="">Любой</option>
-                            <option value="2024">2024</option>
-                            <option value="2023">2023</option>
-                            <option value="2022">2022</option>
-                            <option value="2021">2021</option>
-                            <option value="2020">2020</option>
-                        </select>
-                    </div>
-                    
-                    <div class="filter-group">
-                        <label>Цена, ₽</label>
-                        <div class="price-inputs">
-                            <input type="number" class="filter-input" placeholder="От" min="0">
-                            <span>-</span>
-                            <input type="number" class="filter-input" placeholder="До" min="0">
-                        </div>
-                    </div>
-                
-                <div class="filter-actions">
-                    <button type="submit" class="filter-btn primary">Применить фильтры</button>
-                    <button type="button" class="filter-btn secondary">Показать все</button>
                 </div>
             </form>
         </section>
@@ -101,40 +53,45 @@
         <section class="results-section">
             <div class="results-header">
                 <div class="results-info">
-                    <span class="results-count">Найдено 12 автомобилей</span>
-                    <div class="sort-group">
-                        <label for="sort-by">Сортировка:</label>
-                        <select id="sort-by" class="sort-select">
-                            <option value="price-asc">По цене (сначала дешевые)</option>
-                            <option value="price-desc">По цене (сначала дорогие)</option>
-                            <option value="year-desc">По году (сначала новые)</option>
-                            <option value="year-asc">По году (сначала старые)</option>
-                        </select>
-                    </div>
+                    <span class="results-count">
+                        {% if selected_brand %}
+                            Найдено {{ cars_count }} автомобилей марки {{ selected_brand }}
+                        {% else %}
+                            Найдено {{ cars_count }} автомобилей
+                        {% endif %}
+                    </span>
                 </div>
             </div>
 
             <!-- Сетка автомобилей -->
             <div class="cars-grid extended">
-                <!-- Пример автомобиля 1 -->
+                {% for car in cars %}
                 <div class="car-card detailed">
                     <div class="car-badge new">Новый</div>
-                    <img src="../static/image/584x438.webp" alt="Toyota Camry" class="car-image">
+                    {% if car.image %}
+                        <img src="{{ car.image.url }}" alt="{{ car.name }}" class="car-image">
+                    {% else %}
+                        <img src="/static/image/584x438.webp" alt="{{ car.name }}" class="car-image">
+                    {% endif %}
                     <div class="car-info">
-                        <h3 class="car-name">Toyota Camry 2024</h3>
-                        <div class="car-price">2 500 000 ₽</div>
+                        <h3 class="car-name">{{ car.name }}</h3>
+                        <div class="car-price">{{ car.price }} ₽</div>
                         <div class="car-specs">
                             <div class="spec-item">
                                 <span class="spec-label">Год:</span>
-                                <span class="spec-value">2024</span>
+                                <span class="spec-value">{{ car.year }}</span>
                             </div>
                             <div class="spec-item">
-                                <span class="spec-label">Двигатель:</span>
-                                <span class="spec-value">2.5 л / 249 л.с.</span>
+                                <span class="spec-label">Комплектация:</span>
+                                <span class="spec-value">{{ car.equipment }}</span>
                             </div>
                             <div class="spec-item">
                                 <span class="spec-label">Цвет:</span>
-                                <span class="spec-value">Белый</span>
+                                <span class="spec-value">{{ car.colour }}</span>
+                            </div>
+                            <div class="spec-item">
+                                <span class="spec-label">Категория:</span>
+                                <span class="spec-value">{{ car.categories_id.name }}</span>
                             </div>
                         </div>
                         <div class="car-actions">
@@ -142,49 +99,40 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Пример автомобиля 2 -->
-                <div class="car-card detailed">
-                    <div class="car-badge used">С пробегом</div>
-                    <img src="../static/image/i.webp" alt="Mercedes e200" class="car-image">
-                    <div class="car-info">
-                        <h3 class="car-name">Mercedes e200 2023</h3>
-                        <div class="car-price">3 200 000 ₽</div>
-                        <div class="car-specs">
-                            <div class="spec-item">
-                                <span class="spec-label">Год:</span>
-                                <span class="spec-value">2023</span>
-                            </div>
-                            <div class="spec-item">
-                                <span class="spec-label">Двигатель:</span>
-                                <span class="spec-value">2.0 л / 197 л.с.</span>
-                            </div>
-                            <div class="spec-item">
-                                <span class="spec-label">Цвет:</span>
-                                <span class="spec-value">Черный</span>
-                            </div>
-                        </div>
-                        <div class="car-actions">
-                            <a href="#" class="btn primary">Подробнее</a>
-                        </div>
-                    </div>
+                {% empty %}
+                <div style="grid-column: 1 / -1; text-align: center; padding: 40px;">
+                    <p style="font-size: 18px; color: #666;">
+                        {% if selected_brand %}
+                            Автомобили марки "{{ selected_brand }}" не найдены
+                        {% else %}
+                            Автомобили не найдены
+                        {% endif %}
+                    </p>
                 </div>
-
-                <!-- Добавьте больше автомобилей по аналогии -->
-                
-            </div>
-
-            <!-- Пагинация -->
-            <div class="pagination">
-                <button class="page-btn disabled">← Назад</button>
-                <button class="page-btn active">1</button>
-                <button class="page-btn">2</button>
-                <button class="page-btn">3</button>
-                <button class="page-btn">Вперед →</button>
+                {% endfor %}
             </div>
         </section>
     </div>
 </main>
 
+<script>
+function clearFilter() {
+    // Перенаправляем на страницу без параметров фильтра
+    window.location.href = "{% url 'car' %}";
+}
+
+// Автоматическая отправка формы при выборе марки
+document.addEventListener('DOMContentLoaded', function() {
+    const brandSelect = document.getElementById('car-brand');
+    
+    if (brandSelect) {
+        brandSelect.addEventListener('change', function() {
+            // Если выбрана какая-то марка (не "Все марки"), отправляем форму
+            if (this.value) {
+                this.form.submit();
+            }
+        });
+    }
+});
+</script>
 {% endblock %}
-        
