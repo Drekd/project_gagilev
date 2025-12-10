@@ -39,7 +39,8 @@
                         <img src="/static/image/584x438.webp" alt="{{ car.name }}" class="car-image">
                     {% endif %}
                     <div class="car-info">
-                        <div class="car-name">{{ car.name }}</div>
+                        <div class="car-brand">{{ car.name.split.0 }}</div>
+                        <div class="car-model">{{ car.name.split.1 }}</div>
                         <div class="car-price">{{ car.price }} ₽</div>
                         <div class="car-details">
                             <p>Год: {{ car.year }}</p>
@@ -47,7 +48,7 @@
                             <p>Цвет: {{ car.colour }}</p>
                             <p>Категория: {{ car.categories_id.name }}</p>
                         </div>
-                        <a href="{% url 'car' %}" class="btn">Подробнее</a>
+                        <a href="{% url 'car_detail' car.id %}" class="btn">Подробнее</a>
                     </div>
                 </div>
                 {% empty %}
@@ -80,17 +81,14 @@
 
 <script>
 function clearFilter() {
-    // Перенаправляем на страницу без параметров фильтра
     window.location.href = "{% url 'main' %}";
 }
 
-// Автоматическая отправка формы при выборе марки (опционально)
 document.addEventListener('DOMContentLoaded', function() {
     const brandSelect = document.getElementById('brand');
     
     if (brandSelect) {
         brandSelect.addEventListener('change', function() {
-            // Если выбрана какая-то марка (не "Все марки"), отправляем форму
             if (this.value) {
                 this.form.submit();
             }

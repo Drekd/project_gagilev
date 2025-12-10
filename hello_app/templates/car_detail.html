@@ -1,0 +1,151 @@
+{% extends "index.html" %}
+{% block content %}
+<main class="main-content">
+    <div class="container">
+        <nav class="breadcrumbs">
+            <a href="{% url 'main' %}">Главная</a>
+            <span>→</span>
+            <a href="{% url 'car' %}">Автомобили</a>
+            <span>→</span>
+            <span>{{ car.name }}</span>
+        </nav>
+
+        <div class="car-detail-container">
+            <div class="car-gallery">
+                <div class="main-image">
+                    {% if car.image %}
+                        <img src="{{ car.image.url }}" alt="{{ car.name }}" id="mainCarImage">
+                    {% else %}
+                        <img src="/static/image/584x438.webp" alt="{{ car.name }}" id="mainCarImage">
+                    {% endif %}
+                </div>
+                {% if car.additional_images.all %}
+                <div class="thumbnail-gallery">
+                    {% for image in car.additional_images.all %}
+                    <div class="thumbnail" onclick="changeMainImage('{{ image.image.url }}')">
+                        <img src="{{ image.image.url }}" alt="{{ car.name }} - фото {{ forloop.counter }}">
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="car-info-detail">
+                <div class="car-header">
+                    <h1 class="car-title">{{ car.name }}</h1>
+                    <div class="car-price-detail">{{ car.price }} ₽</div>
+                    <div class="car-badge {% if car.year > 2023 %}new{% else %}used{% endif %}">
+                        {% if car.year > 2023 %}Новый{% else %}С пробегом{% endif %}
+                    </div>
+                </div>
+
+                <div class="specifications">
+                    <h2>Основные характеристики</h2>
+                    <div class="specs-grid">
+                        <div class="spec-item">
+                            <span class="spec-label">Год выпуска:</span>
+                            <span class="spec-value">{{ car.year }}</span>
+                        </div>
+                        <div class="spec-item">
+                            <span class="spec-label">Цвет:</span>
+                            <span class="spec-value">{{ car.colour }}</span>
+                        </div>
+                        <div class="spec-item">
+                            <span class="spec-label">Комплектация:</span>
+                            <span class="spec-value">{{ car.equipment }}</span>
+                        </div>
+                        <div class="spec-item">
+                            <span class="spec-label">Категория:</span>
+                            <span class="spec-value">{{ car.categories.name }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                {% if car.description %}
+                <div class="car-description">
+                    <h2>Описание</h2>
+                    <p>{{ car.description }}</p>
+                </div>
+                {% endif %}
+
+                <div class="seller-contact">
+                    <h2>Контакты продавца</h2>
+                    <div class="seller-info">
+                        {% if car.seller %}
+                        <div class="seller-detail">
+                            <div class="seller-name">{{ car.seller.last_name }} {{ car.seller.first_name }}</div>
+                            <div class="seller-phone">{{ car.seller.phone_number }}</div>
+                            <div class="seller-position">{{ car.seller.post.post|default:"Продавец" }}</div>
+                        </div>
+                        {% else %}
+                        <div class="seller-detail">
+                            <div class="seller-name">Отдел продаж</div>
+                            <div class="seller-phone">8 800 123-45-67</div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="car-actions-detail">
+                    <button class="btn primary" onclick="showContactForm()">Запросить цену</button>
+                    <button class="btn secondary" onclick="scheduleTestDrive()">Записаться на тест-драйв</button>
+                    <a href="tel:+78001234567" class="btn call-btn">Позвонить сейчас</a>
+                </div>
+            </div>
+        </div>
+</main>
+
+<div id="contactModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h2>Запросить информацию</h2>
+        <form id="contactForm">
+            <div class="form-group">
+                <label for="clientName">Ваше имя</label>
+                <input type="text" id="clientName" required>
+            </div>
+            <div class="form-group">
+                <label for="clientPhone">Телефон</label>
+                <input type="tel" id="clientPhone" required>
+            </div>
+            <div class="form-group">
+                <label for="clientMessage">Сообщение</label>
+                <textarea id="clientMessage" rows="4">Интересует автомобиль {{ car.name }}</textarea>
+            </div>
+            <button type="submit" class="btn primary">Отправить запрос</button>
+        </form>
+    </div>
+</div>
+
+<script>
+function changeMainImage(imageUrl) {
+    document.getElementById('mainCarImage').src = imageUrl;
+}
+
+function showContactForm() {
+    document.getElementById('contactModal').style.display = 'block';
+}
+
+function closeModal() {
+    document.getElementById('contactModal').style.display = 'none';
+}
+
+function scheduleTestDrive() {
+    const phone = '{{ car.seller.phone_number|default:"+78001234567" }}';
+    window.location.href = `tel:${phone}`;
+}
+
+window.onclick = function(event) {
+    const modal = document.getElementById('contactModal');
+    if (event.target == modal) {
+        modal.style.display = 'none';
+    }
+}
+
+document.getElementById('contactForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    alert('Ваш запрос отправлен! С вами свяжутся в ближайшее время.');
+    closeModal();
+});
+</script>
+{% endblock %}

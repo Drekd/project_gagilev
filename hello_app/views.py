@@ -1,48 +1,53 @@
-from django.shortcuts import render
-from .models import *
+from django.shortcuts import render, get_object_or_404
+from .models import Car, Seller
 
 def main(request):
-    # Получаем параметр марки из GET-запроса
-    selected_brand = request.GET.get('brand', '')
-    
-    # Фильтруем автомобили по марке если указана
-    if selected_brand:
-        cars = Car.objects.filter(name__startswith=selected_brand)
-    else:
-        cars = Car.objects.all()[:4]  # Только первые 4 для главной
-    
+    cars = Car.objects.all()[:6]
     sellers = Seller.objects.all()
-    
-    # Получаем уникальные марки для фильтра
-    brands = set(car.name.split()[0] for car in Car.objects.all() if car.name)
+    all_cars = Car.objects.all()
+    brands = []
+    for car in all_cars:
+        brand = car.name.split()[0] if car.name else "Неизвестно"
+        if brand not in brands:
+            brands.append(brand)
     
     context = {
         'cars': cars,
         'sellers': sellers,
-        'brands': sorted(brands),
-        'selected_brand': selected_brand,
+        'brands': brands,
+        'title': 'Главная - АвтоСалон'
     }
-    
     return render(request, 'main.html', context)
 
-def index2(request):
-    # Получаем параметр марки из GET-запроса
+def car(request):
+    cars = Car.objects.all()
+    
+    all_cars = Car.objects.all()
+    brands = []
+    for car in all_cars:
+        brand = car.name.split()[0] if car.name else "Неизвестно"
+        if brand not in brands:
+            brands.append(brand)
+    
     selected_brand = request.GET.get('brand', '')
     
-    # Фильтруем автомобили по марке если указана
     if selected_brand:
-        cars = Car.objects.filter(name__startswith=selected_brand)
-    else:
-        cars = Car.objects.all()
-    
-    # Получаем уникальные марки для фильтра
-    brands = set(car.name.split()[0] for car in Car.objects.all() if car.name)
+        cars = [car for car in cars if car.name.startswith(selected_brand)]
     
     context = {
         'cars': cars,
-        'brands': sorted(brands),
+        'brands': brands,
         'selected_brand': selected_brand,
-        'cars_count': cars.count(),
+        'cars_count': len(cars),
+        'title': 'Каталог автомобилей'
     }
-    
     return render(request, 'index2.html', context)
+
+def car_detail(request, car_id):
+    car = get_object_or_404(Car, id=car_id)
+    
+    context = {
+        'car': car,
+        'title': f'{car.name} - АвтоСалон'
+    }
+    return render(request, 'car_detail.html', context)

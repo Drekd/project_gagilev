@@ -18,8 +18,6 @@
             </h1>
             <p class="page-subtitle">Большой выбор новых и подержанных автомобилей</p>
         </section>
-
-        <!-- Простой фильтр по марке -->
         <section class="filters-section">
             <div class="filters-header">
                 {% if selected_brand %}
@@ -48,8 +46,6 @@
                 </div>
             </form>
         </section>
-
-        <!-- Результаты поиска -->
         <section class="results-section">
             <div class="results-header">
                 <div class="results-info">
@@ -62,8 +58,6 @@
                     </span>
                 </div>
             </div>
-
-            <!-- Сетка автомобилей -->
             <div class="cars-grid extended">
                 {% for car in cars %}
                 <div class="car-card detailed">
@@ -95,7 +89,7 @@
                             </div>
                         </div>
                         <div class="car-actions">
-                            <a href="#" class="btn primary">Подробнее</a>
+                            <a href="{% url 'car_detail' car.id %}" class="btn primary">Подробнее</a>
                         </div>
                     </div>
                 </div>
@@ -117,17 +111,14 @@
 
 <script>
 function clearFilter() {
-    // Перенаправляем на страницу без параметров фильтра
     window.location.href = "{% url 'car' %}";
 }
 
-// Автоматическая отправка формы при выборе марки
 document.addEventListener('DOMContentLoaded', function() {
     const brandSelect = document.getElementById('car-brand');
     
     if (brandSelect) {
         brandSelect.addEventListener('change', function() {
-            // Если выбрана какая-то марка (не "Все марки"), отправляем форму
             if (this.value) {
                 this.form.submit();
             }
