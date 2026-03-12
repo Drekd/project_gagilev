@@ -110,3 +110,19 @@ class Costumer(models.Model):
 
     def __str__(self):  
         return f"{self.last_name} {self.first_name}" 
+
+class CarImage(models.Model):
+    car = models.ForeignKey(Car, on_delete=models.CASCADE, related_name='additional_images', verbose_name="Автомобиль")
+    image = models.ImageField("Изображение", upload_to='cars/gallery/')
+    is_main = models.BooleanField("Главное фото", default=False)
+    uploaded_at = models.DateTimeField("Дата загрузки", auto_now_add=True)
+    
+    class Meta:
+        verbose_name = "Изображение автомобиля"
+        verbose_name_plural = "Изображения автомобилей"
+        ordering = ['-is_main', 'uploaded_at']
+    
+    def __str__(self):
+        return f"Фото для {self.car.name}"
+
+

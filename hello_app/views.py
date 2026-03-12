@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from .models import Car, Seller
+from .models import Car, Seller, CarImage
 
 def main(request):
     cars = Car.objects.all()[:6]
@@ -48,6 +48,23 @@ def car_detail(request, car_id):
     
     context = {
         'car': car,
+        'title': f'{car.name} - АвтоСалон'
+    }
+    return render(request, 'car_detail.html', context)
+
+def car_detail(request, car_id):
+    car = get_object_or_404(Car, id=car_id)
+    car_images = car.additional_images.all() 
+    main_image = car_images.filter(is_main=True).first()
+    if not main_image and car.image:
+        main_image = car.image
+    elif not main_image and not car.image:
+        main_image = None
+    
+    context = {
+        'car': car,
+        'car_images': car_images,
+        'main_image': main_image,
         'title': f'{car.name} - АвтоСалон'
     }
     return render(request, 'car_detail.html', context)

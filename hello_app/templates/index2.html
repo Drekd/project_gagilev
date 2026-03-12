@@ -24,27 +24,52 @@
                 <button class="reset-filters" onclick="clearFilter()">Показать все марки</button>
                 {% endif %}
             </div>
-            
-            <form class="filters-form" method="GET">
-                <div class="filters-grid" style="grid-template-columns: 300px auto;">
-                    <div class="filter-group">
-                        <label for="car-brand">Выберите марку</label>
-                        <select id="car-brand" name="brand" class="filter-select">
-                            <option value="">Все марки</option>
-                            {% for brand in brands %}
-                            <option value="{{ brand }}" {% if selected_brand == brand %}selected{% endif %}>{{ brand }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    
-                    <div class="filter-actions">
-                        <button type="submit" class="filter-btn primary">Применить</button>
-                        {% if selected_brand %}
-                        <button type="button" class="filter-btn secondary" onclick="clearFilter()">Сбросить</button>
-                        {% endif %}
-                    </div>
-                </div>
-            </form>
+<form class="filters-form" method="GET">
+    <div class="filters-grid">
+        <div class="filter-group">
+            <label for="car-brand">Марка</label>
+            <select id="car-brand" name="brand" class="filter-select">
+                <option value="">Все марки</option>
+                {% for brand in brands %}
+                <option value="{{ brand }}" {% if selected_brand == brand %}selected{% endif %}>{{ brand }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div class="filter-group">
+            <label>Цена, ₽</label>
+            <div class="price-inputs">
+                <input type="number" name="min_price" placeholder="от" value="{{ min_price }}" class="filter-input" min="0">
+                <input type="number" name="max_price" placeholder="до" value="{{ max_price }}" class="filter-input" min="0">
+            </div>
+        </div>
+        
+        <div class="filter-group">
+            <label for="car-year">Год</label>
+            <select id="car-year" name="year" class="filter-select">
+                <option value="">Любой</option>
+                {% for year in years %}
+                <option value="{{ year }}" {% if selected_year == year|stringformat:"i" %}selected{% endif %}>{{ year }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div class="filter-group">
+            <label for="car-category">Категория</label>
+            <select id="car-category" name="category" class="filter-select">
+                <option value="">Все</option>
+                {% for category in categories %}
+                <option value="{{ category.name }}" {% if selected_category == category.name %}selected{% endif %}>{{ category.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+    
+    <div class="filter-actions">
+        <button type="submit" class="filter-btn primary">Применить фильтры</button>
+        <a href="{% url 'car' %}" class="filter-btn secondary">Сбросить все</a>
+    </div>
+</form>
         </section>
         <section class="results-section">
             <div class="results-header">
