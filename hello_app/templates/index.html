@@ -77,46 +77,38 @@
                 </div>
             </div>
             <div class="copyright">
-                &copy; 2025 Автосалон. Все на высшем уровне.
+                &copy; 2026 Автосалон. Все на высшем уровне.
             </div>
         </div>
     </footer>
 
-    <script>
-        function toggleAdvancedFilters() {
-            const advancedFilters = document.getElementById('advancedFilters');
-            if (advancedFilters.style.display === 'none') {
-                advancedFilters.style.display = 'block';
-            } else {
-                advancedFilters.style.display = 'none';
-            }
-        }
-    </script>
-    <script>
-function toggleAdvancedFilters() {
-    const advancedFilters = document.getElementById('advancedFilters');
-    if (advancedFilters) {
-        if (advancedFilters.style.display === 'none') {
-            advancedFilters.style.display = 'block';
-        } else {
-            advancedFilters.style.display = 'none';
-        }
-    }
-}
+    <button class="theme-toggle" id="themeToggle" aria-label="Переключить тему">
+        🌙
+    </button>
 
-function validatePriceRange(minInput, maxInput) {
-    if (minInput && maxInput && minInput.value && maxInput.value) {
-        const min = parseInt(minInput.value);
-        const max = parseInt(maxInput.value);
-        
-        if (min > max) {
-            alert('Минимальная цена не может быть больше максимальной');
-            minInput.focus();
-            return false;
-        }
-    }
-    return true;
-}
-</script>
+    <div id="contactModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Запросить информацию</h2>
+            <form id="contactForm">
+                <div class="form-group">
+                    <label for="clientName">Ваше имя</label>
+                    <input type="text" id="clientName" required>
+                </div>
+                <div class="form-group">
+                    <label for="clientPhone">Телефон</label>
+                    <input type="tel" id="clientPhone" required>
+                </div>
+                <div class="form-group">
+                    <label for="clientMessage">Сообщение</label>
+                    <textarea id="clientMessage" rows="4">Интересует автомобиль</textarea>
+                </div>
+                <button type="submit" class="btn primary">Отправить запрос</button>
+            </form>
+        </div>
+    </div>
+
+
+    <script src="./static/js/filter.js"></script>
 </body>
 </html>
