@@ -1,0 +1,60 @@
+{% extends "index.html" %}
+{% block content %}
+<main class="main-content">
+    <div class="container">
+        <nav class="breadcrumbs">
+            <a href="{% url 'main' %}">Главная</a>
+            <span>→</span>
+            <span>Контакты</span>
+        </nav>
+
+        <section class="contacts-section">
+            <h1>Контакты автосалона SellCar</h1>
+            
+            <div class="contacts-grid">
+                <div class="contacts-info">
+                    <div class="contact-block">
+                        <h3>Адрес</h3>
+                        <p>г. Сургут, ул. Мелик-Карамова, д. 40</p>
+                    </div>
+                    <div class="contact-block">
+                        <h3>Телефон</h3>
+                        <p><a href="tel:+78001234567">8 800 123-45-67</a></p>
+                    </div>
+                    <div class="contact-block">
+                        <h3>Email</h3>
+                        <p><a href="mailto:info@autosalon.ru">info@autosalon.ru</a></p>
+                    </div>
+                    <div class="contact-block">
+                        <h3>Режим работы</h3>
+                        <p>Пн-Пт: 9:00 – 21:00<br>Сб-Вс: 10:00 – 20:00</p>
+                    </div>
+                </div>
+                
+                <div class="contacts-map">
+                    <div id="map" style="width: 100%; height: 400px; border-radius: 10px;"></div>
+                </div>
+            </div>
+        </section>
+    </div>
+</main>
+
+<script src="https://api-maps.yandex.ru/2.1/?apikey=590e6c8a-dca2-4c49-b1a4-c2a35892b19d&lang=ru_RU"></script>
+<script>
+    ymaps.ready(init);
+    function init() {
+        var myMap = new ymaps.Map("map", {
+            center: [61.2533, 73.3964],
+            zoom: 16,
+            controls: ["zoomControl", "fullscreenControl"]
+        });
+        
+        var myPlacemark = new ymaps.Placemark([61.2533, 73.3964], {
+            hintContent: "SellCar Auto",
+            balloonContent: "<strong>SellCar Автосалон</strong><br>г. Сургут, пр-т Ленина, 1<br>☎ 8 800 123-45-67"
+        });
+        
+        myMap.geoObjects.add(myPlacemark);
+    }
+</script>
+{% endblock %}

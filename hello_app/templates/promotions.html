@@ -1,0 +1,36 @@
+{% extends "index.html" %}
+{% block content %}
+<main class="main-content">
+    <div class="container">
+        <nav class="breadcrumbs">
+            <a href="{% url 'main' %}">Главная</a>
+            <span>→</span>
+            <span>Акции</span>
+        </nav>
+
+        <section class="promotions-section">
+            <h1>Наши акции и предложения</h1>
+            
+            <div class="promotions-grid">
+                <div class="promotion-card">
+                    <h3>Скидка 10% на первый автомобиль</h3>
+                    <p>Для новых клиентов — скидка 10% на любой автомобиль из нашего каталога.</p>
+                    <span class="promotion-date">До 31 декабря 2026</span>
+                </div>
+                
+                <div class="promotion-card">
+                    <h3>Бесплатная страховка в подарок</h3>
+                    <p>При покупке автомобиля стоимостью от 2 000 000 ₽ — страховка КАСКО на 1 год бесплатно.</p>
+                    <span class="promotion-date">До 30 ноября 2026</span>
+                </div>
+                
+                <div class="promotion-card">
+                    <h3>Trade-in с выгодой</h3>
+                    <p>Обменяйте свой старый автомобиль на новый с доплатой. Оценка за 1 час.</p>
+                    <span class="promotion-date">Постоянная акция</span>
+                </div>
+            </div>
+        </section>
+    </div>
+</main>
+{% endblock %}

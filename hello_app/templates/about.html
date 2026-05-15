@@ -1,0 +1,51 @@
+{% extends "index.html" %}
+{% block content %}
+<main class="main-content">
+    <div class="container">
+        <nav class="breadcrumbs">
+            <a href="{% url 'main' %}">Главная</a>
+            <span>→</span>
+            <span>О компании</span>
+        </nav>
+
+        <section class="about-section">
+            <h1>О компании SellCar</h1>
+            <p>Мы — современный автосалон, предлагающий широкий выбор новых и подержанных автомобилей.</p>
+            <p>Наша цель — сделать покупку автомобиля простой, прозрачной и приятной.</p>
+            
+            <h2>Наши преимущества</h2>
+            <ul>
+                <li>Только проверенные автомобили</li>
+                <li>Помощь в оформлении кредита и страховки</li>
+                <li>Собственный сервисный центр</li>
+                <li>Гарантия на все автомобили</li>
+            </ul>
+        </section>
+
+        <section class="map-section">
+            <h2>Как нас найти</h2>
+            <div id="map" style="width: 100%; height: 400px; margin-top: 20px; border-radius: 10px;"></div>
+            <p class="map-address"><strong>Адрес:</strong> г. Сургут, ул. Мелик-Карамова, д. 40</p>
+        </section>
+    </div>
+</main>
+
+<script src="https://api-maps.yandex.ru/2.1/?apikey=590e6c8a-dca2-4c49-b1a4-c2a35892b19d&lang=ru_RU"></script>
+<script>
+    ymaps.ready(init);
+    function init() {
+        var myMap = new ymaps.Map("map", {
+            center: [61.2533, 73.3964],  
+            zoom: 16,
+            controls: ["zoomControl", "fullscreenControl"]
+        });
+        
+        var myPlacemark = new ymaps.Placemark([61.2533, 73.3964], {
+            hintContent: "SellCar Auto",
+            balloonContent: "<strong>SellCar Автосалон</strong><br>г. Сургут, пр-т Ленина, 1<br>☎ +7 (3462) 00-00-00"
+        });
+        
+        myMap.geoObjects.add(myPlacemark);
+    }
+</script>
+{% endblock %}

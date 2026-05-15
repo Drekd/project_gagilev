@@ -42,30 +42,15 @@ def car(request):
         'cars_count': len(cars),
         'title': 'Каталог автомобилей'
     }
-    return render(request, 'index2.html', context)
+    return render(request, 'main.html', context)
 
 def car_detail(request, car_id):
     car = get_object_or_404(Car, id=car_id)
-    
-    context = {
-        'car': car,
-        'title': f'{car.name} - АвтоСалон'
-    }
-    return render(request, 'car_detail.html', context)
-
-def car_detail(request, car_id):
-    car = get_object_or_404(Car, id=car_id)
-    car_images = car.additional_images.all() 
-    main_image = car_images.filter(is_main=True).first()
-    if not main_image and car.image:
-        main_image = car.image
-    elif not main_image and not car.image:
-        main_image = None
+    car_images = car.additional_images.all()
     
     context = {
         'car': car,
         'car_images': car_images,
-        'main_image': main_image,
         'title': f'{car.name} - АвтоСалон'
     }
     return render(request, 'car_detail.html', context)
@@ -107,3 +92,20 @@ def car_api(request):
         })
     
     return JsonResponse({'cars': cars_data, 'count': len(cars_data)})
+
+def about(request):
+    context = {
+        'title': 'О компании - АвтоСалон'
+    }
+    return render(request, 'about.html', context)
+def promotions(request):
+    context = {
+        'title': 'Акции - АвтоСалон'
+    }
+    return render(request, 'promotions.html', context)
+
+def contacts(request):
+    context = {
+        'title': 'Контакты - АвтоСалон'
+    }
+    return render(request, 'contacts.html', context)
